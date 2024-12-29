@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "02d7b8749d676e6aa8abf3c318966601",
+    "content-hash": "2352a8fe3f5f175da68c967fc1c1ed56",
     "packages": [
         {
             "name": "brick/math",
@@ -1521,11 +1521,17 @@
         },
         {
             "name": "laymont/laravel-pattern-repository",
-            "version": "dev-main",
+            "version": "v1.0.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/laymont/PatternRepositoryLaravel.git",
+                "reference": "1d753662046bc3642cbbfe4ebb58b16b94c76390"
+            },
             "dist": {
-                "type": "path",
-                "url": "packages/Laymont/PatternRepository",
-                "reference": "d28cdea3dad3b0a6c46f2e429be116552f0fd1f4"
+                "type": "zip",
+                "url": "https://api.github.com/repos/laymont/PatternRepositoryLaravel/zipball/1d753662046bc3642cbbfe4ebb58b16b94c76390",
+                "reference": "1d753662046bc3642cbbfe4ebb58b16b94c76390",
+                "shasum": ""
             },
             "require": {
                 "php": "^8.2"
@@ -1544,15 +1550,16 @@
                     "Laymont\\PatternRepository\\Exceptions\\": "src/Exceptions/"
                 }
             },
-            "autoload-dev": {
-                "psr-4": {
-                    "Laymont\\PatternRepository\\Tests\\": "tests/"
-                }
-            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
             "description": "Paquete para generar repositorios en laravel",
-            "transport-options": {
-                "relative": true
-            }
+            "support": {
+                "issues": "https://github.com/laymont/PatternRepositoryLaravel/issues",
+                "source": "https://github.com/laymont/PatternRepositoryLaravel/tree/v1.0.1"
+            },
+            "time": "2024-12-29T14:30:57+00:00"
         },
         {
             "name": "lcobucci/clock",
@@ -1694,16 +1701,16 @@
         },
         {
             "name": "league/commonmark",
-            "version": "2.6.0",
+            "version": "2.6.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/thephpleague/commonmark.git",
-                "reference": "d150f911e0079e90ae3c106734c93137c184f932"
+                "reference": "d990688c91cedfb69753ffc2512727ec646df2ad"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/thephpleague/commonmark/zipball/d150f911e0079e90ae3c106734c93137c184f932",
-                "reference": "d150f911e0079e90ae3c106734c93137c184f932",
+                "url": "https://api.github.com/repos/thephpleague/commonmark/zipball/d990688c91cedfb69753ffc2512727ec646df2ad",
+                "reference": "d990688c91cedfb69753ffc2512727ec646df2ad",
                 "shasum": ""
             },
             "require": {
@@ -1797,7 +1804,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2024-12-07T15:34:16+00:00"
+            "time": "2024-12-29T14:10:59+00:00"
         },
         {
             "name": "league/config",
@@ -10560,7 +10567,6 @@
     "aliases": [],
     "minimum-stability": "stable",
     "stability-flags": {
-        "laymont/laravel-pattern-repository": 20,
         "roave/security-advisories": 20
     },
     "prefer-stable": true,

@@ -3,12 +3,6 @@
     "name": "laravel/laravel",
     "type": "project",
     "description": "The skeleton application for the Laravel framework.",
-    "repositories": [
-        {
-            "type": "path",
-            "url": "packages/Laymont/PatternRepository"
-        }
-    ],
     "keywords": ["laravel", "framework"],
     "license": "MIT",
     "require": {
@@ -17,7 +11,7 @@
         "laravel/framework": "^11.31",
         "laravel/sanctum": "^4.0",
         "laravel/tinker": "^2.9",
-        "laymont/laravel-pattern-repository": "dev-main",
+        "laymont/laravel-pattern-repository": "^1.0",
         "symfony/css-selector": "^7.2",
         "symfony/dom-crawler": "^7.2",
         "tymon/jwt-auth": "^2.1"
