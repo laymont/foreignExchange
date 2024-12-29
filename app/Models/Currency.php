@@ -5,14 +5,22 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
+/**
+ * @method static find(int $id)
+ * @method static create(array $attributes)
+ * @method static findOrFail(int $id)
+ * @method paginate(mixed $perPage)
+ */
 class Currency extends Model
 {
     protected $table = 'currencies';
+
     protected $fillable = [
         'name',
         'symbol',
         'is_active',
     ];
+
     protected function casts(): array
     {
         return [
@@ -25,6 +33,7 @@ class Currency extends Model
             'deleted_at' => 'datetime:Y-m-d H:i',
         ];
     }
+
     public function values(): HasMany
     {
         return $this->hasMany(CurrencyValue::class);

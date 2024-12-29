@@ -1,7 +1,8 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Api;
 
+use App\Http\Controllers\Controller;
 use App\Models\User;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -31,8 +32,10 @@ class JWTAuthController extends Controller
         ]);
 
         $token = JWTAuth::fromUser($user);
-        return response()->json(compact('user','token'), 201);
+
+        return response()->json(compact('user', 'token'), 201);
     }
+
     public function login(Request $request): JsonResponse
     {
         $credentials = $request->only('email', 'password');
@@ -42,11 +45,13 @@ class JWTAuthController extends Controller
             }
 
             $user = auth()->user();
+
             return response()->json(compact('token'));
         } catch (JWTException $e) {
             return response()->json(['error' => 'could_not_create_token'], 500);
         }
     }
+
     public function getUser(): JsonResponse
     {
         try {
@@ -59,9 +64,10 @@ class JWTAuthController extends Controller
 
         return response()->json(compact('user'));
     }
+
     public function logout(): JsonResponse
     {
-        JWTAuth::invalidate(JWTAuth::getToken());
+        auth()->logout();
 
         return response()->json(['message' => 'Successfully logged out']);
     }

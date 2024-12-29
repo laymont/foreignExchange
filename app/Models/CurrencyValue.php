@@ -8,11 +8,13 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 class CurrencyValue extends Model
 {
     protected $table = 'currency_values';
+
     protected $fillable = [
         'date',
         'currency_id',
         'value',
     ];
+
     protected function casts(): array
     {
         return [
@@ -25,6 +27,7 @@ class CurrencyValue extends Model
             'deleted_at' => 'datetime:Y-m-d H:i',
         ];
     }
+
     public function currency(): BelongsTo
     {
         return $this->belongsTo(Currency::class);

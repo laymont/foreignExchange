@@ -10,6 +10,7 @@ use Illuminate\Http\Request;
 class BcvCurrencyController extends Controller
 {
     protected BcvCurrencies $bcvCurrencies;
+
     public function __construct(BcvCurrencies $bcvCurrencies)
     {
         $this->bcvCurrencies = $bcvCurrencies;
@@ -22,6 +23,7 @@ class BcvCurrencyController extends Controller
     {
         try {
             $this->bcvCurrencies->scrape();
+
             return response()->json(['message' => 'Exchange rates updated successfully.'], 200);
         } catch (\Exception $e) {
             return response()->json(['error' => $e->getMessage()], 500);

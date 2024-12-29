@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->timestamp('date');
             $table->foreignId('currency_id')->constrained('currencies')->cascadeOnDelete();
-            $table->decimal('value', 2);
+            $table->decimal('value', 8);
             $table->timestamps();
             $table->softDeletes();
         });

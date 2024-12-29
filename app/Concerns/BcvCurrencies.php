@@ -3,10 +3,10 @@
 namespace App\Concerns;
 
 use App\Models\CurrencyValue;
+use Carbon\Carbon;
 use Exception;
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\GuzzleException;
-use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Log;
 use Symfony\Component\DomCrawler\Crawler;
@@ -14,7 +14,9 @@ use Symfony\Component\DomCrawler\Crawler;
 class BcvCurrencies
 {
     protected string $url;
+
     protected array $data;
+
     protected Client $client;
 
     public function __construct()
@@ -25,8 +27,8 @@ class BcvCurrencies
                 'Accept' => 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8',
                 'Accept-Language' => 'en-US,en;q=0.5',
                 'Connection' => 'keep-alive',
-                'verify' => false,
             ],
+            'verify' => false, //base_path('certs/cacert.pem'), // Asegúrate de tener configurado el certificado o elimina esta línea si es necesario
         ]);
         $this->url = config('bcv.url');
     }
@@ -44,16 +46,34 @@ class BcvCurrencies
 
             $currenciesData = [];
 
-            $crawler->filter('div[id]')->each(function (Crawler $node) use (&$currenciesData) {
-                $id = $node->attr('id');
-                $value = trim($node->filter('div.centrado strong')->text());
+            // Obtener la fecha
+            $fechaTexto = $crawler->filter('div.pull-right.dinpro.center span.date-display-single')->attr('content');
 
+            $fecha = Carbon::parse($fechaTexto);
+
+            // Iterar sobre cada div con un id de divisa (euro, yuan, lira, rublo, dolar)
+            $divisas_ids = ['euro', 'yuan', 'lira', 'rublo', 'dolar'];
+            foreach ($divisas_ids as $id_divisa) {
+                $contenedorDivisa = $crawler->filter("#{$id_divisa}");
+
+                // Verificar si el contenedor de la divisa fue encontrado
+                if ($contenedorDivisa->count() === 0) {
+                    Log::error("No se encontró el contenedor de la divisa {$id_divisa}.");
+
+                    continue;  // Saltar a la siguiente divisa
+                }
+
+                // Obtener el nombre de la divisa a partir del span
+                $nombreDivisa = trim($contenedorDivisa->filter('span')->first()->text()); // Obtener el primer span
+
+                // Obtener el valor de la divisa desde el strong
+                $valorDivisa = trim($contenedorDivisa->filter('div.centrado strong')->text());
                 // Reemplace la coma por un punto para poder convertir a float
-                $value = (float) str_replace(',', '.', $value);
+                $valorDivisa = (float) str_replace(',', '.', $valorDivisa);
 
-                // Almacena el valor en el arreglo de divisas
-                $currenciesData[$id] = $value;
-            });
+                $currenciesData[$nombreDivisa] = $valorDivisa;
+
+            }
 
             // Cache de la respuesta por un minuto
             Cache::put('exchange_rates', $currenciesData, now()->addMinutes(1));
@@ -64,7 +84,7 @@ class BcvCurrencies
                 $currencyId = $this->mapCurrencyId($id);
                 if ($currencyId) {
                     CurrencyValue::create([
-                        'date' => now(),
+                        'date' => $fecha, // Usar la fecha obtenida
                         'currency_id' => $currencyId,
                         'value' => $value,
                     ]);
@@ -79,18 +99,15 @@ class BcvCurrencies
 
     /**
      * Función para mapear el ID de la divisa a la tabla de currencies.
-     *
-     * @param string $id
-     * @return int|null
      */
     protected function mapCurrencyId(string $id): ?int
     {
         $currencyMap = [
-            'euro' => 1, // ID de Currency para EUR
-            'yuan' => 2, // ID de Currency para CNY
-            'lira' => 3, // ID de Currency para TRY
-            'rublo' => 4, // ID de Currency para RUB
-            'dolar' => 5, // ID de Currency para USD
+            'EUR' => 1, // ID de Currency para EUR
+            'CNY' => 2, // ID de Currency para CNY
+            'TRY' => 3, // ID de Currency para TRY
+            'RUB' => 4, // ID de Currency para RUB
+            'USD' => 5, // ID de Currency para USD
         ];
 
         return $currencyMap[$id] ?? null;
