@@ -50,6 +50,7 @@ namespace App\Models{
 /**
  * 
  *
+ * @mixin Eloquent
  * @property int $id
  * @property \Illuminate\Support\Carbon $date
  * @property int $currency_id
@@ -78,6 +79,7 @@ namespace App\Models{
 /**
  * 
  *
+ * @mixin Eloquent
  * @property int $id
  * @property string $name
  * @property string $email

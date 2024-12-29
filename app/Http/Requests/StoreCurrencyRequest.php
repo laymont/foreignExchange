@@ -5,7 +5,16 @@ namespace App\Http\Requests;
 use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
+use OpenApi\Annotations as OA;
 
+/**
+ *  @OA\Schema(
+ *      title="StoreCurrencyRequest",
+ *      description="Store Currency Request body data",
+ *      type="object",
+ *      required={"name", "acronym","symbol","is_active","last_value","slug"}
+ * )
+ */
 class StoreCurrencyRequest extends FormRequest
 {
     /**
@@ -27,7 +36,8 @@ class StoreCurrencyRequest extends FormRequest
             'name' => ['required', 'string', 'max:80', Rule::unique('currencies', 'name')],
             'acronym' => ['required', 'string', 'max:3', Rule::unique('currencies', 'acronym')],
             'symbol' => ['required', 'string', 'min:1', 'max:3', Rule::unique('currencies', 'symbol')],
-            'is_active' => 'nullable|boolean',
+            'is_active' => ['nullable', 'boolean'],
+            'slug' => ['nullable','boolean', Rule::unique('currencies', 'slug')],
         ];
     }
 }
