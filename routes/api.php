@@ -17,7 +17,8 @@ Route::prefix('v1')->group(function ($route) {
 Route::name('api.v1.')->prefix('v1')->middleware([\App\Http\Middleware\JwtMiddleware::class])->group(function ($route) {
     $route->get('/user', [\App\Http\Controllers\Api\V1\AuthenticationController::class, 'getUser']);
     $route->post('/user', [\App\Http\Controllers\Api\V1\AuthenticationController::class, 'logout']);
-    $route->get('update-exchange-rates', BcvCurrencyController::class)->name('update-exchange-rates');
-    $route->apiResource('currencies', CurrencyController::class);
 
+    $route->get('update-exchange-rates', BcvCurrencyController::class)->name('update-exchange-rates');
+
+    $route->apiResource('currencies', CurrencyController::class);
 });

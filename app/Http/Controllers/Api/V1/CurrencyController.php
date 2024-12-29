@@ -41,8 +41,9 @@ class CurrencyController extends Controller
             return response()->json($resource, Response::HTTP_CREATED);
         } catch (\Throwable $e) {
             Log::error('Error registrando nueva moneda', ['message' => $e->getMessage()]);
+
             return response()->json([
-                'message' => 'Error registrando nueva moneda: ' . $e->getMessage()
+                'message' => 'Error registrando nueva moneda: '.$e->getMessage(),
             ], Response::HTTP_INTERNAL_SERVER_ERROR);
         }
     }
@@ -59,7 +60,7 @@ class CurrencyController extends Controller
             return response()->json($resource, Response::HTTP_OK);
         } catch (\Throwable $e) {
             return response()->json([
-                'message' => 'Error al obtener moneda: ' . $e->getMessage()
+                'message' => 'Error al obtener moneda: '.$e->getMessage(),
             ], Response::HTTP_NOT_FOUND);
         }
     }
@@ -70,7 +71,7 @@ class CurrencyController extends Controller
     public function update(UpdateCurrencyRequest $request, string $id): JsonResponse
     {
         try {
-            $this->currency->update((int)$id, $request->validated());
+            $this->currency->update((int) $id, $request->validated());
             $currency = $this->currency->getById($id);
             $resource = new CurrencyResource($currency);
 
@@ -78,8 +79,9 @@ class CurrencyController extends Controller
 
         } catch (\Throwable $e) {
             Log::error('Error al actualizar moneda', ['message' => $e->getMessage()]);
+
             return response()->json([
-                'message' => 'Error al actualizar moneda: ' . $e->getMessage()
+                'message' => 'Error al actualizar moneda: '.$e->getMessage(),
             ], Response::HTTP_INTERNAL_SERVER_ERROR);
         }
     }
@@ -90,13 +92,14 @@ class CurrencyController extends Controller
     public function destroy(string $id): JsonResponse
     {
         try {
-            $this->currency->delete((int)$id);
+            $this->currency->delete((int) $id);
 
             return response()->json(null, Response::HTTP_NO_CONTENT);
         } catch (\Throwable $e) {
             Log::error('Error al eliminar moneda', ['message' => $e->getMessage()]);
+
             return response()->json([
-                'message' => 'Error al eliminar moneda: ' . $e->getMessage()
+                'message' => 'Error al eliminar moneda: '.$e->getMessage(),
             ], Response::HTTP_INTERNAL_SERVER_ERROR);
         }
     }

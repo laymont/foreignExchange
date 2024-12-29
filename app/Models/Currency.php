@@ -2,37 +2,14 @@
 
 namespace App\Models;
 
+use Eloquent;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Support\Str;
 
 /**
- * @property int $id
- * @property string $name
- * @property string $acronym
- * @property string $symbol
- * @property bool $is_active
- * @property string $slug
- * @property \Illuminate\Support\Carbon|null $created_at
- * @property \Illuminate\Support\Carbon|null $updated_at
- * @property \Illuminate\Support\Carbon|null $deleted_at
- * @property-read mixed $last_value
- * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\CurrencyValue> $values
- * @property-read int|null $values_count
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Currency newModelQuery()
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Currency newQuery()
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Currency query()
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Currency whereAcronym($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Currency whereCreatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Currency whereDeletedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Currency whereId($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Currency whereIsActive($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Currency whereName($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Currency whereSlug($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Currency whereSymbol($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Currency whereUpdatedAt($value)
- * @mixin \Eloquent
+ * @mixin Eloquent
  * @mixin IdeHelperCurrency
  */
 class Currency extends Model

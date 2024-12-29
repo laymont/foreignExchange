@@ -68,6 +68,7 @@ class CurrencyRepository implements CurrencyInterface
             return DB::transaction(function () use ($id, $attributes) {
                 $model = $this->model::findOrFail($id);
                 $model->update($attributes);
+
                 return true;
             });
         } catch (ModelNotFoundException $e) {

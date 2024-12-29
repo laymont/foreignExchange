@@ -5,6 +5,16 @@ namespace App\Http\Resources;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
+/**
+ * @property mixed $id
+ * @property mixed $name
+ * @property mixed $acronym
+ * @property mixed $symbol
+ * @property mixed $created_at
+ * @property mixed $slug
+ * @property mixed $last_value
+ * @property mixed $is_active
+ */
 class CurrencyResource extends JsonResource
 {
     /**

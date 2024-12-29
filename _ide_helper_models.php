@@ -15,6 +15,7 @@ namespace App\Models{
 /**
  * 
  *
+ * @mixin Eloquent
  * @property int $id
  * @property string $name
  * @property string $acronym
