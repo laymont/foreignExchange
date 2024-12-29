@@ -17,6 +17,7 @@ return new class extends Migration
             $table->string('acronym');
             $table->char('symbol', 3)->unique();
             $table->boolean('is_active')->default(false);
+            $table->string('slug')->unique()->index();
             $table->timestamps();
             $table->softDeletes();
         });

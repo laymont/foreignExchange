@@ -2,10 +2,12 @@
 
 namespace App\Repositories;
 
+use App\Concerns\HandlePerPageTrait;
 use App\Models\Currency;
 use App\Repositories\Interfaces\CurrencyInterface;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Laymont\PatternRepository\Exceptions\RepositoryException;
@@ -13,11 +15,13 @@ use Throwable;
 
 class CurrencyRepository implements CurrencyInterface
 {
+    use HandlePerPageTrait;
+
     public function __construct(protected Currency $model) {}
 
-    public function all($request = null)
+    public function all(Request $request): mixed
     {
-        $perPage = $request->get('per_page', 15);
+        $perPage = $this->getPerPage($request);
 
         return $this->model->paginate($perPage)->withQueryString();
     }
@@ -25,9 +29,14 @@ class CurrencyRepository implements CurrencyInterface
     /**
      * @throws RepositoryException
      */
-    public function getById(int $id): ?Model
+    public function getById(mixed $id): ?Model
     {
-        $model = $this->model::find($id);
+        if (is_numeric($id)) {
+            $model = $this->model::find($id);
+        } else {
+            $model = $this->model::where('slug', $id)->first();
+        }
+
         if (! $model) {
             throw new RepositoryException('Registro no encontrado.');
         }
@@ -58,8 +67,8 @@ class CurrencyRepository implements CurrencyInterface
         try {
             return DB::transaction(function () use ($id, $attributes) {
                 $model = $this->model::findOrFail($id);
-
-                return $model->update($attributes);
+                $model->update($attributes);
+                return true;
             });
         } catch (ModelNotFoundException $e) {
             throw new RepositoryException('Registro no encontrado.', 404, $e);
@@ -76,8 +85,9 @@ class CurrencyRepository implements CurrencyInterface
     {
         try {
             $model = $this->model::findOrFail($id);
+            $model->delete();
 
-            return $model->delete();
+            return true;
         } catch (ModelNotFoundException $e) {
             throw new RepositoryException('Registro no encontrado.', 404, $e);
         } catch (Throwable $exception) {

@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 use App\Models\Currency;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Str;
 
 class CurrencySeeder extends Seeder
 {
@@ -14,31 +15,36 @@ class CurrencySeeder extends Seeder
     {
         $currencies = collect([
             [
-                'name' => 'euro',
+                'slug' => Str::uuid(),
+                'name' => 'EURO',
                 'acronym' => 'EUR',
                 'symbol' => '€',
                 'is_active' => true,
             ],
             [
-                'name' => 'yuan',
+                'slug' => Str::uuid(),
+                'name' => 'YUAN',
                 'acronym' => 'CNY',
                 'symbol' => '¥',
                 'is_active' => true,
             ],
             [
-                'name' => 'lira',
+                'slug' => Str::uuid(),
+                'name' => 'LIRA',
                 'acronym' => 'TRY',
                 'symbol' => '₺',
                 'is_active' => true,
             ],
             [
-                'name' => 'rublo',
+                'slug' => Str::uuid(),
+                'name' => 'RUBLO',
                 'acronym' => 'RUB',
                 'symbol' => '₽',
                 'is_active' => true,
             ],
             [
-                'name' => 'dolar',
+                'slug' => Str::uuid(),
+                'name' => 'DOLAR',
                 'acronym' => 'USD',
                 'symbol' => '$',
                 'is_active' => true,

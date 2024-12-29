@@ -1,19 +1,23 @@
 <?php
 
-use App\Http\Controllers\Api\BcvCurrencyController;
+use App\Http\Controllers\Api\V1\BcvCurrencyController;
+use App\Http\Controllers\Api\V1\CurrencyController;
 use Illuminate\Support\Facades\Route;
 
-Route::name('api.')->get('/', static function () {
-    return response()->json([
-        'message' => 'Welcome to our api application',
-    ]);
+Route::prefix('v1')->group(function ($route) {
+    $route->get('/', function () {
+        return response()->json([
+            'message' => 'Welcome to our api application',
+        ]);
+    });
+    $route->post('register', [\App\Http\Controllers\Api\V1\AuthenticationController::class, 'register']);
+    $route->post('login', [\App\Http\Controllers\Api\V1\AuthenticationController::class, 'login']);
 });
-Route::post('register', [\App\Http\Controllers\Api\JWTAuthController::class, 'register']);
-Route::post('login', [\App\Http\Controllers\Api\JWTAuthController::class, 'login']);
 
-Route::middleware([\App\Http\Middleware\JwtMiddleware::class])->group(function ($route) {
-    $route->get('/user', [\App\Http\Controllers\Api\JWTAuthController::class, 'getUser']);
-    $route->post('/user', [\App\Http\Controllers\Api\JWTAuthController::class, 'logout']);
+Route::name('api.v1.')->prefix('v1')->middleware([\App\Http\Middleware\JwtMiddleware::class])->group(function ($route) {
+    $route->get('/user', [\App\Http\Controllers\Api\V1\AuthenticationController::class, 'getUser']);
+    $route->post('/user', [\App\Http\Controllers\Api\V1\AuthenticationController::class, 'logout']);
     $route->get('update-exchange-rates', BcvCurrencyController::class)->name('update-exchange-rates');
+    $route->apiResource('currencies', CurrencyController::class);
 
 });

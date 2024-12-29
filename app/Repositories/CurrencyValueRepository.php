@@ -2,28 +2,29 @@
 
 namespace App\Repositories;
 
-use Laymont\PatternRepository\Exceptions\RepositoryException;
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\ModelNotFoundException;
 use App\Models\CurrencyValue;
 use App\Repositories\Interfaces\CurrencyValueInterface;
-use Illuminate\Support\Facades\Log;
-use Throwable;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
+use Laymont\PatternRepository\Exceptions\RepositoryException;
+use Throwable;
 
 class CurrencyValueRepository implements CurrencyValueInterface
 {
     public function __construct(protected CurrencyValue $model) {}
 
-    public function all( $request = null)
+    public function all($request = null)
     {
-       $perPage = $request->get('per_page', 15);
-       return $this->model->paginate($perPage)->withQueryString();
+        $perPage = $request->get('per_page', 15);
+
+        return $this->model->paginate($perPage)->withQueryString();
     }
 
     /**
-    * @throws RepositoryException
-    */
+     * @throws RepositoryException
+     */
     public function getById(int $id): ?Model
     {
         $model = $this->model::find($id);
@@ -35,45 +36,47 @@ class CurrencyValueRepository implements CurrencyValueInterface
     }
 
     /**
-    * @throws RepositoryException
-    */
+     * @throws RepositoryException
+     */
     public function new(array $attributes): Model
     {
-         try {
+        try {
             return DB::transaction(function () use ($attributes) {
                 return $this->model::create($attributes);
             });
         } catch (Throwable $e) {
-            Log::error('Error al crear registro: ' . $e->getMessage());
+            Log::error('Error al crear registro: '.$e->getMessage());
             throw new RepositoryException('Error al crear registro', 0, $e);
         }
     }
 
     /**
-    * @throws RepositoryException
-    */
+     * @throws RepositoryException
+     */
     public function update(int $id, array $attributes): bool
     {
-         try {
+        try {
             return DB::transaction(function () use ($id, $attributes) {
                 $model = $this->model::findOrFail($id);
+
                 return $model->update($attributes);
             });
         } catch (ModelNotFoundException $e) {
             throw new RepositoryException('Registro no encontrado.', 404, $e);
-        }catch (Throwable $e) {
-            Log::error( 'Error al actualizar el registro: ' . $e->getMessage());
+        } catch (Throwable $e) {
+            Log::error('Error al actualizar el registro: '.$e->getMessage());
             throw new RepositoryException('Error al actualizar el registro.', 0, $e);
         }
     }
 
     /**
-    * @throws RepositoryException
-    */
+     * @throws RepositoryException
+     */
     public function delete(int $id): bool
     {
-          try {
+        try {
             $model = $this->model::findOrFail($id);
+
             return $model->delete();
         } catch (ModelNotFoundException $e) {
             throw new RepositoryException('Registro no encontrado.', 404, $e);

@@ -2,6 +2,7 @@
 
 namespace App\Console\Commands;
 
+use App\Models\Currency;
 use GuzzleHttp\Client;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Log;
@@ -26,7 +27,7 @@ class GetBcvCurrencies extends Command
     /**
      * Execute the console command.
      */
-    public function handle()
+    public function handle(): void
     {
         $url = 'http://www.bcv.org.ve/';
 
@@ -71,6 +72,7 @@ class GetBcvCurrencies extends Command
 
             $this->info('Valores de las divisas del BCV:');
             foreach ($divisas as $divisa => $valor) {
+                $this->storeValue($divisa, $valor);
                 $this->line("{$divisa}: {$valor}");
             }
 
@@ -78,5 +80,21 @@ class GetBcvCurrencies extends Command
             Log::error('Error al obtener las divisas del BCV: '.$e->getMessage());
             $this->error('Error al obtener las divisas del BCV: '.$e->getMessage());
         }
+    }
+
+    private function storeValue(string $acronym, $value): void
+    {
+        $currency = Currency::where('acronym', $acronym)->first();
+
+        // 1. Reemplaza la coma por un punto
+        $value = str_replace(',', '.', $value);
+
+        // 2. Convierte la cadena a un float
+        $value = (float) $value;
+
+        $currency->values()->create([
+            'date' => now(),
+            'value' => $value,
+        ]);
     }
 }

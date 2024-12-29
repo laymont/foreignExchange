@@ -7,9 +7,9 @@ use Illuminate\Http\Request;
 
 interface CurrencyInterface
 {
-    public function all(?Request $request = null);
+    public function all(Request $request);
 
-    public function getById(int $id): ?Model;
+    public function getById(mixed $id): ?Model;
 
     public function new(array $attributes): Model;
 

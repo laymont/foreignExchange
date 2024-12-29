@@ -4,12 +4,10 @@ namespace App\Repositories\Interfaces;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
-use Illuminate\Support\Collection;
-
 
 interface CurrencyValueInterface
 {
-    public function all(Request $request = null);
+    public function all(?Request $request = null);
 
     public function getById(int $id): ?Model;
 
