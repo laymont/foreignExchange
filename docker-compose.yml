@@ -1,0 +1,29 @@
+services:
+    foreign_exchange_api:
+        build:
+            context: .
+            dockerfile: .docker/api/Dockerfile
+        container_name: foreign_exchange_api
+        ports:
+            - "8080:80"
+        volumes:
+            - .:/var/www/html
+        env_file:
+            - .docker/api/.env
+        depends_on:
+            - mysql
+
+    mysql:
+        build:
+            context: .
+            dockerfile: .docker/mysql/Dockerfile
+        container_name: mysql_db
+        ports:
+            - "3306:3306"
+        volumes:
+            - db_data:/var/lib/mysql
+        env_file:
+            - .docker/mysql/.env
+
+volumes:
+    db_data:

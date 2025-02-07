@@ -23,7 +23,7 @@ class CurrencyRepository implements CurrencyInterface
     {
         $perPage = $this->getPerPage($request);
 
-        return $this->model->paginate($perPage)->withQueryString();
+        return $this->model::paginate($perPage)->withQueryString();
     }
 
     /**
@@ -66,10 +66,7 @@ class CurrencyRepository implements CurrencyInterface
     {
         try {
             return DB::transaction(function () use ($id, $attributes) {
-                $model = $this->model::findOrFail($id);
-                $model->update($attributes);
-
-                return true;
+                return (bool) $this->model::query()->where('id', $id)->update($attributes);
             });
         } catch (ModelNotFoundException $e) {
             throw new RepositoryException('Registro no encontrado.', 404, $e);
